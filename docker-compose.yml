@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  backend:
+    container_name: shrinkmeup-server
+    restart: unless-stopped
+    image: shrinkmeup-server:1.1.0
+    build:
+      context: tiny-url-backend # Path to your backend directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000 # Map container port 8000 to host port 8000
+    depends_on:
+      - database # Assuming you have a separate database service defined
+
+  frontend:
+    container_name: shrinkmeup-client
+    restart: unless-stopped
+    image: shrinkmeup-client:1.1.0
+    build:
+      context: tiny-url # Path to your frontend directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000 # Map container port 3000 to host port 3000
+    depends_on:
+      - backend
+
+  database:
+    image: mongo:latest # Assuming you want to use MongoDB, adjust as needed
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data/db:/data/db # Mount a volume for persistent data storage

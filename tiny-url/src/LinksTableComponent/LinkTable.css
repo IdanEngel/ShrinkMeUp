@@ -1,0 +1,39 @@
+
+.table-container {
+    margin: 20px;
+
+  }
+  
+  .link-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ffffff; 
+    
+  }
+  
+  .link-table th,
+  .link-table td {
+    padding: 8px;
+    border: 1px solid #ffffff; 
+    
+  }
+  
+  .link-table th {
+    background-color: #f0f0f042; 
+  }
+  
+  .link-table tr:nth-child(even) {
+    background-color: #ffecec42; 
+  }
+  
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .loading-spinner img {
+    width: 100px; 
+    height: 100px;
+  }
+  
+  
