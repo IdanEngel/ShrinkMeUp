@@ -34,7 +34,7 @@ by navigating to http://localhost:3000.
 ## Usage
 1. Open your web browser and go to http://localhost:3000.
 2. Enter a long URL that you want to shorten in the input field.
-3. Click on the "Shorten" button.
+3. Click on the "Shorten URL" button.
 4. You will receive a short URL for the entered long URL.
 5. To use the short URL, simply copy it and share it with others.
 
