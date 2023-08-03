@@ -24,12 +24,12 @@ const LinkTable: React.FC = () => {
   // fetching all links from database
   const fetchLinks = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/allLinks"); 
+      const response = await axios.get("http://localhost:8000/allLinks");
       setLinks(response.data);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching links:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -38,6 +38,12 @@ const LinkTable: React.FC = () => {
       {/* Conditional rendering */}
       {isLoading ? (
         <LoadingScreen />
+      ) : links.length === 0 ? (
+        // If there are no links will display this instead of empty table
+        <>
+          <h1>There Are No Shorten Link Yet (Sad Face) </h1>
+          <h2>Feel Free To Add Some ;-) </h2>
+        </>
       ) : (
         <table className="link-table">
           <thead>
