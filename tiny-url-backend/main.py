@@ -28,16 +28,7 @@ async def read_rood():
     response = await fetch_all()
     return response
 
-
-@app.get("/api/{originalLink}", response_model= LinkModel)
-async def linkExisted(originalLink):
-    response = await fetch_originalLink(originalLink)
-    if response:
-        print(response["dobbyLink"])
-        return response
-    raise HTTPException(404, "no link found")
-
-
+# Posting the urls to db
 @app.post("/sendLink")
 async def sendLinks(links: LinkModel):
     # Checks if the short link existed

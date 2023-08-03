@@ -1,9 +1,11 @@
 from model import LinkModel
 
 
+
 # mongo driver
 import motor.motor_asyncio
 
+# I've entered the path as is (and not through .env file), for your convenience 
 client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://ida2423:gsKsQmuGGM1xrlDO@cluster0.ssrujod.mongodb.net/")
 db = client.LinksList
 collection = db.Links
@@ -19,6 +21,7 @@ async def fetch_all():
 # Adding the links to the database
 async def addLink(originalDoc):
     document = dict(originalDoc)
+    # Adding to db
     result = await collection.insert_one(document)
     inserted_id = str(result.inserted_id)
     originalLink = str(originalDoc["originalLink"])
