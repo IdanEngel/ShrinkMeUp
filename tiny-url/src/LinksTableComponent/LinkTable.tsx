@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./LinkTable.css";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
+import DOMPurify from "dompurify";
 
 interface LinkData {
   _id: string;
@@ -32,7 +33,6 @@ const LinkTable: React.FC = () => {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="table-container">
       {/* Conditional rendering */}
@@ -57,7 +57,7 @@ const LinkTable: React.FC = () => {
               <tr key={link.dobbyLink}>
                 <td>{link.originalLink}</td>
                 <td>
-                  <a href={link.dobbyLink}>{link.dobbyLink}</a>
+                  <a href={DOMPurify.sanitize(link.dobbyLink)}>{link.dobbyLink}</a>
                 </td>
               </tr>
             ))}

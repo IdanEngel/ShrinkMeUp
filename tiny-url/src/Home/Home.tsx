@@ -1,13 +1,13 @@
-// App.tsx
 
 import React, { useState } from "react";
 import "../App.css";
 
 import URLShortenerForm from "../formComponent/URLShortenerForm";
 import axios from "axios";
+// import QRCode from 'qrcode.react';
 import { nanoid } from "nanoid";
+import DOMPurify from "dompurify";
 
-// import Redirect  from './Redirect';
 
 const App: React.FC = () => {
   // short link (generatedUrl) state
@@ -52,7 +52,7 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
-
+  let sanitizedURL;
   return (
     <>
       <div className="formLink">
@@ -60,11 +60,12 @@ const App: React.FC = () => {
         <URLShortenerForm onSubmit={handleSubmit} />
         {generatedUrl !== null && ( // Check for undefined before rendering
           <>
+            {(sanitizedURL = DOMPurify.sanitize(generatedUrl))}
             <div className="generatedLink">
               Generated URL:{" "}
-              <a href={generatedUrl} className="generatedUrl">
+              <a href={sanitizedURL} className="generatedUrl">
                 {" "}
-                {generatedUrl}
+                {sanitizedURL}
               </a>
             </div>
             <div>
@@ -82,6 +83,7 @@ const App: React.FC = () => {
                 <p>Copied!</p>
               )}
             </div>
+
           </>
         )}
       </div>

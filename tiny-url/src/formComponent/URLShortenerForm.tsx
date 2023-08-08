@@ -1,5 +1,7 @@
 import { nanoid } from "nanoid";
 import React, { useState } from "react";
+import validator from 'validator'
+
 
 interface URLShortenerFormProps {
   onSubmit: (longUrl: string, generatedURL: string) => void;
@@ -22,8 +24,10 @@ const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onSubmit }) => {
   // Checking if the user entered a valid url
   const isValidURL = (url: string) => {
     try {
-      new URL(url);
-      return true;
+      //validate url
+      if(validator.isURL(url) && new URL(url)){
+        return true;
+      }
     } catch (error) {
       return false;
     }
