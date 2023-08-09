@@ -1,13 +1,13 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 
 import URLShortenerForm from "../formComponent/URLShortenerForm";
 import axios from "axios";
-// import QRCode from 'qrcode.react';
+import QRCode from "qrcode.react";
+import html2canvas from "html2canvas";
+
 import { nanoid } from "nanoid";
 import DOMPurify from "dompurify";
-
 
 const App: React.FC = () => {
   // short link (generatedUrl) state
@@ -15,10 +15,31 @@ const App: React.FC = () => {
   // Copy to clipboard button state
   const [copyButton, setCopyButton] = useState<boolean>(false);
 
+  useEffect(() => {}, [generatedUrl]);
+
+  const downloadQRCode = async () => {
+    const qrCodeElement = document.getElementById("qr-code");
+    if (qrCodeElement) {
+      const canvas = await html2canvas(qrCodeElement);
+      const imageURL = canvas.toDataURL("image/png");
+
+      // Create a link element and trigger a download
+      const link = document.createElement("a");
+      link.href = imageURL;
+      link.download = "qrcode.png";
+      link.click();
+    }
+  };
+
   const MAX_RETRIES = 3; // Maximum number of retries
   let retries = 0;
   // handleSubmit is responsible for posting the db with both urls and save them
-  const handleSubmit = async (longUrl: string, generatedURL: string) => {
+  const handleSubmit = async (longUrl: string | null, generatedURL: string | null) => {
+    if (!longUrl && !generatedURL) {
+      setGeneratedUrl(null);
+      console.error("error");
+      return;
+    }
     try {
       // Posting to server the original and shorten (dobby) links
       await axios
@@ -52,7 +73,6 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
-  let sanitizedURL;
   return (
     <>
       <div className="formLink">
@@ -60,12 +80,11 @@ const App: React.FC = () => {
         <URLShortenerForm onSubmit={handleSubmit} />
         {generatedUrl !== null && ( // Check for undefined before rendering
           <>
-            {(sanitizedURL = DOMPurify.sanitize(generatedUrl))}
             <div className="generatedLink">
               Generated URL:{" "}
-              <a href={sanitizedURL} className="generatedUrl">
+              <a href={DOMPurify.sanitize(generatedUrl)} className="generatedUrl">
                 {" "}
-                {sanitizedURL}
+                {DOMPurify.sanitize(generatedUrl)}
               </a>
             </div>
             <div>
@@ -83,7 +102,11 @@ const App: React.FC = () => {
                 <p>Copied!</p>
               )}
             </div>
-
+            <div className="qr-wrapper">
+              <h2> You Also Have A QR Code!</h2>
+              <QRCode value={generatedUrl} id="qr-code" />
+              <button onClick={downloadQRCode} className="qr-download">Download QR Code</button>
+            </div>
           </>
         )}
       </div>

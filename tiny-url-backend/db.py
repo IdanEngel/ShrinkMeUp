@@ -1,12 +1,17 @@
 from model import LinkModel
+from dotenv import load_dotenv
+import os
+
 
 
 
 # mongo driver
 import motor.motor_asyncio
+load_dotenv()
+mongo_uri = os.environ.get("MONGO_URI")
 
 # I've entered the path as is (and not through .env file), for your convenience 
-client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://ida2423:gsKsQmuGGM1xrlDO@cluster0.ssrujod.mongodb.net/")
+client = motor.motor_asyncio.AsyncIOMotorClient(mongo_uri)
 db = client.LinksList
 collection = db.Links
 

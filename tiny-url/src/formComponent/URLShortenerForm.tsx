@@ -4,7 +4,7 @@ import validator from 'validator'
 
 
 interface URLShortenerFormProps {
-  onSubmit: (longUrl: string, generatedURL: string) => void;
+  onSubmit: (longUrl: string | null, generatedURL: string | null) => void;
 }
 
 // This component handles the form (Input and Submit Button)
@@ -12,6 +12,9 @@ const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onSubmit }) => {
   // States to save user input and error messages
   const [longUrl, setLongUrl] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+
+
 
   // Setting the longUrl state when the user types
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +43,7 @@ const URLShortenerForm: React.FC<URLShortenerFormProps> = ({ onSubmit }) => {
       setLongUrl("");
       setErrorMessage("");
     } else {
+      onSubmit(null, null);
       setErrorMessage("Please enter a valid URL.");
     }
   };
